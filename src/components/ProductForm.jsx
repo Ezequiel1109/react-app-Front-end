@@ -10,7 +10,7 @@ const initialDataForm = {
 // eslint-disable-next-line react/prop-types
 export const ProductForm = ({ productSelected, handlerAdd }) => {
   const [form, setForm] = useState(initialDataForm);
-  const {id,name, price, quantity, description } = form;
+  const {id, name, price, quantity, description } = form;
 
   useEffect(() => {
     setForm(productSelected);
