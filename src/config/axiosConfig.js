@@ -5,11 +5,9 @@ const apiUser = axios.create({
   baseURL: "http://localhost:8080/",
   timeout: 10000, // tiempo de espera de 10 segundos
   headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json'
-  }, 
-  maxContentLength: Infinity,   // desactiva límite en navegador
-  maxBodyLength: Infinity,   // desactiva límite en navegador     
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+  },
 });
 
 //interceptor para ejecutar el token antes de enviar
@@ -29,35 +27,20 @@ const apiUser = axios.create({
 //interceptor para limpiar los datos antes de enviar
 apiUser.interceptors.request.use(
   (config) => {
-    console.log("=== AXIOS REQUEST ===");
-    console.log("URL:", config.url);
+    console.log("=== AXIOS REQUEST URL===", config.url);
     console.log("Method:", config.method);
-    console.log("Data antes de limpiar:", config.data);
 
-    //limpia los datos del objeto anidados
+    //limpia los datos del objeto anidados,elimina la serealizacion innecesaria de objetos
     if (config.data && typeof config.data === "object") {
-      const cleanData = {};
       Object.keys(config.data).forEach((key) => {
-        const keyValue = config.data[key];
-        if (keyValue !== null && keyValue !== undefined) {
-          //convertir todo a tipos primitivos
-          if (keyValue && typeof keyValue === "object") {
-            cleanData[key] = JSON.stringify(keyValue);
-          } else {
-            cleanData[key] = keyValue;
-          }
+        if (config.data[key] === null || config.data[key] === undefined) {
+          delete config.data[key];
         }
       });
-      config.data = cleanData;
+      return config;
     }
-
-    console.log("data despues de ser purificada: ", config.data);
-    console.log("JSON.stringify(data): ", JSON.stringify(config.data));
-    console.log("=== FIN AXIOS REQUEST ===");
-    return config;
   },
   (error) => {
-    console.error("=== Error en Request interceptor: ===", error);
     return Promise.reject(error);
   }
 );
@@ -66,18 +49,12 @@ apiUser.interceptors.request.use(
 apiUser.interceptors.response.use(
   (response) => {
     console.log("=== AXIOS RESPONSE ===");
-    console.log("Status:", response.status);
     console.log("Data:", response.data);
-    console.log("======================");
     return response;
   },
   (error) => {
     console.error("=== AXIOS ERROR ===");
-    console.error("Status:", error.response?.status);
     console.error("Data:", error.response?.data);
-    console.error("Message:", error.message);
-    console.error("===================");
-
     // Mejorar mensajes de error
     if (error.response?.data) {
       const errorMessage =

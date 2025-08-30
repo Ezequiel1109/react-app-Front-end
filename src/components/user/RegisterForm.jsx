@@ -46,8 +46,7 @@ export const RegisterForm = () => {
         });
       }
     }
-  };
-  console.log(serverErrors); 
+  }; 
   return (
     <div className="card mx-auto my-4" style={{ maxWidth: 400 }}>
       <div className="card-body">

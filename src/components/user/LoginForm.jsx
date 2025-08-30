@@ -31,7 +31,7 @@ export const LoginForm = () => {
         text: "Inicio de sesión exitoso.",
       });
       reset();
-      setTimeout(() => navigate("/products"), 1000); // Redirige a la página principal después de 1 segundo
+      setTimeout(() => navigate("api/products"), 1000); // Redirige a la página principal después de 1 segundo
     } catch (error) {
       // Captura el error lanzado por unwrap y Axios
       let backField = error?.response?.data?.field || error?.field;
@@ -48,7 +48,6 @@ export const LoginForm = () => {
       }
     }
   };
-  console.log(serverErrors); // Para depuración, puedes eliminarlo después
   return (
     <div className="card mx-auto my-4" style={{ maxWidth: 400 }}>
       <div className="card-body">

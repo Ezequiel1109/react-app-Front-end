@@ -11,7 +11,14 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:8080',
         changeOrigin: true,
-        secure: false,
+        /* secure: false, */
+        configure: (proxy) => {
+          proxy.on('proxyReq', (proxyReq, req, res) => {
+            proxyReq.setHeader('Content-Length', req.headers['content-length'] || 0);
+          });
+        },
+        // Aumenta el límite de tamaño
+        maxBodySize: 50 * 1024 * 1024, // 50MB
       },
     },
   },
