@@ -3,7 +3,7 @@ import { PropTypes } from "prop-types"
 
 export const ProductTable = ({handlerProductSelected, handlerRemove ,products = []}) =>{
     return(
-        <table className="table table-hover table-striped">
+        <table className="table table-dark table-hover ">
             <thead>
                 <tr>
                     <th>Nombre</th>
