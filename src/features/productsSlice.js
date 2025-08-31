@@ -3,36 +3,37 @@ import { findAll, create, update, remove } from "../services/ProductService";
 
 // --- THUNK PARA OBTENER TODOS LOS PRODUCTOS ---
 export const fetchProducts = createAsyncThunk(
-  "products/fetchProducts",
+  "api/products/fetchProducts",
   async (_,{rejectWithValue}) => {
     try{
       const response = await findAll();
-      return response.data;
+      return response;
     }catch(error){
-      console.error("Error en fetchProducts:", error.response?.data || error.message);
-      return rejectWithValue(error.response?.data);
+      const errorMsg = error?.response?.data || error?.message || "Error desconocido";
+      console.error("Error en fetchProducts:", errorMsg);
+      return rejectWithValue(errorMsg);
     }
   }
 );
 
 export const addProduct = createAsyncThunk(
-  "products/addProduct",
+  "api/products/addProduct",
   async (productData) => {
     const response = await create(productData);
-    return response.data;
+    return response;
   }
 );
 
 export const updateProduct = createAsyncThunk(
-  "products/updateProduct",
+  "api/products/updateProduct",
   async (productData) => {
     const response = await update(productData);
-    return response.data;
+    return response;
   }
 );
 
 export const deleteProduct = createAsyncThunk(
-  "products/deleteProduct",
+  "api/products/deleteProduct",
   async (id) => {
     await remove(id);
     return id;

@@ -18,7 +18,7 @@ export const login = async (credentials) => {
     console.log("credentials recibido:", credentials);
 
     const response = await apiUser.post(`/user/login`, credentials);
-    return response.data;
+    return response;
   } catch (error) {
     throw error;
   }

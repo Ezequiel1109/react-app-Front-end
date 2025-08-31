@@ -14,7 +14,7 @@ export const addRegister = createAsyncThunk("user/addRegister", async (userData,
 export const addLogin = createAsyncThunk("user/addLogin", async (credentials, { rejectWithValue }) => {
   try{
     const response = await login(credentials);
-    return response;
+    return response.data;
   } catch (error) {
     return rejectWithValue(error.response.data.message);
   }
@@ -23,7 +23,7 @@ export const addLogin = createAsyncThunk("user/addLogin", async (credentials, { 
 export const authSlice = createSlice({
   name: "user",
   initialState: {
-    isAuthenticated: false,
+    isAuth: false,
     user: null,
     token: localStorage.getItem("token") || null,
     loading: false,
@@ -32,13 +32,13 @@ export const authSlice = createSlice({
   },
   reducers: {
     logout: (state) =>{
-      state.isAuthenticated = false;
+      state.isAuth = false;
       state.user = null;
       state.token = null;
       localStorage.removeItem("token");
     },
     setAuth: (state, action) =>{
-      state.isAuthenticated = true;
+      state.isAuth = true;
       state.user = action.payload.user;
       state.token = action.payload.token;
       localStorage.setItem("token", action.payload.token);
@@ -63,14 +63,15 @@ export const authSlice = createSlice({
       })
       .addCase(addLogin.fulfilled, (state, action) => {
         state.loading = false;
-        state.isAuthenticated = true;
-        state.user = action.payload.user;
+        state.isAuth = true;
         state.token = action.payload.token;
+        state.user = action.payload.user || null;
+    
         localStorage.setItem("token", action.payload.token);
       })
       .addCase(addLogin.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload.error;
+        state.error = action.payload || "Error al iniciar sesión";
       });
   },
 });

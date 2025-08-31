@@ -6,23 +6,21 @@ const apiUser = axios.create({
   timeout: 10000, // tiempo de espera de 10 segundos
   headers: {
     "Content-Type": "application/json",
-    "Accept": "application/json",
+    Authorization: `Bearer ${localStorage.getItem('token')}`
   },
 });
 
 //interceptor para ejecutar el token antes de enviar
-/* apiUser.interceptors.request.use(
+apiUser.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
     if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
-); */
+  (error) => Promise.reject(error)
+); 
 
 //interceptor para limpiar los datos antes de enviar
 apiUser.interceptors.request.use(
@@ -48,24 +46,13 @@ apiUser.interceptors.request.use(
 //creacion del interceptor response - manejar errores
 apiUser.interceptors.response.use(
   (response) => {
-    console.log("=== AXIOS RESPONSE ===");
-    console.log("Data:", response.data);
+    console.log("=== AXIOS RESPONSE ===","Data:", response.data);
     return response;
   },
   (error) => {
     console.error("=== AXIOS ERROR ===");
     console.error("Data:", error.response?.data);
-    // Mejorar mensajes de error
-    if (error.response?.data) {
-      const errorMessage =
-        typeof error.response.data === "string"
-          ? error.response.data
-          : error.response.data.message ||
-            error.response.data.error ||
-            "An error occurred";
-      throw new Error(errorMessage);
-    }
-    throw new Error(error.message || "error de conexión");
+    return Promise.reject(error);
   }
 );
 export default apiUser;

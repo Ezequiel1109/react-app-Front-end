@@ -15,7 +15,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Navbar />
         <Routes>
           <Route path="/" element={<ProductApp title="Productos!"/>} />
-          <Route path="api/products" element={<ProductApp title="Productos!"/>} />
+          <Route path="/api/products" element={<ProductApp title="Productos!"/>} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
 

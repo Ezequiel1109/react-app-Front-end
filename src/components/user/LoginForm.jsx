@@ -31,7 +31,7 @@ export const LoginForm = () => {
         text: "Inicio de sesión exitoso.",
       });
       reset();
-      setTimeout(() => navigate("api/products"), 1000); // Redirige a la página principal después de 1 segundo
+      setTimeout(() => navigate("/api/products"), 1000); // Redirige a la página principal después de 1 segundo
     } catch (error) {
       // Captura el error lanzado por unwrap y Axios
       let backField = error?.response?.data?.field || error?.field;

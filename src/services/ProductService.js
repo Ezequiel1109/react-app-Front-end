@@ -2,7 +2,8 @@ import apiUser from "../config/axiosConfig";
 
 export const findAll = async () => {
   try {
-    return await apiUser.get(`api/products`);
+    const response = await apiUser.get(`api/products`);
+    return response.data;
   } catch (error) {
     throw error;
   }
@@ -10,11 +11,7 @@ export const findAll = async () => {
 
 export const create = async (product) => {
   try {
-    const token = getToken();
-
-    const response = await apiUser.post(`api/products`, product, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await apiUser.post(`api/products`, product);
     return response.data;
   } catch (error) {
     throw error;
@@ -24,10 +21,7 @@ export const create = async (product) => {
 
 export const update = async ({ id, product }) => {
   try {
-    const token = getToken();
-    const response = await apiUser.put(`api/products/${id}`, product, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await apiUser.put(`api/products/${id}`, product);
     return response.data;
   } catch (error) {
     throw error;
@@ -37,10 +31,7 @@ export const update = async ({ id, product }) => {
 
 export const remove = async (id) => {
   try {
-    const token = getToken();
-    await apiUser.delete(`api/products/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    await apiUser.delete(`api/products/${id}`);
     return true;
   } catch (error) {
     throw error;

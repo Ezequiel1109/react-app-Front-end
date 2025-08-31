@@ -33,13 +33,19 @@ export const ProductApp = ({ title }) => {
   });
 
   useEffect(() => {
-    if (!isAuth) {
-      dispatch(fetchProducts());
+    if (isAuth) {
+      dispatch(fetchProducts())
+        .unwrap()
+        .catch((err) => {
+          setMessage({
+            type: "danger",
+            text: "Error al cargar productos: " + (err?.message || "Error desconocido"),
+          });
+        });
     }
-    
   }, [dispatch, isAuth]);
 
-  if (isAuth) {
+  if (!isAuth) {
     return (
       <div className="alert alert-warning text-center mt-5">
         <h4>Acceso Restringido</h4>
